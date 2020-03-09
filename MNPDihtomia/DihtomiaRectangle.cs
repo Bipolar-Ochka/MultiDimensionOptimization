@@ -11,7 +11,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
         List<double> lowerCorner;
         List<double> upperCorner;
         public List<double> center;
-        double Q;
+        public double Q;
 
         public DihtomiaRectangle(List<double> leftCorner, List<double> rightCorner)
         {
