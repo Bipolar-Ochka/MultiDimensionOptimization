@@ -7,7 +7,7 @@ using static MultiDimensionOptimization.MDO;
 namespace MultiDimensionOptimization.MNPDihtomia
 {
 
-    public enum Rule
+    public enum RuleD
     {
         FIFO,
         LIFO,
@@ -15,21 +15,21 @@ namespace MultiDimensionOptimization.MNPDihtomia
     }
     public static class MNPD
     {
-        static DihtomiaRectangle GetRectangle(LinkedList<DihtomiaRectangle> list,Rule rule)
+        static DihtomiaRectangle GetRectangle(LinkedList<DihtomiaRectangle> list,RuleD rule)
         {
             switch (rule)
             {
-                case Rule.FIFO:
+                case RuleD.FIFO:
                     return list.Dequeue();
-                case Rule.LIFO:
+                case RuleD.LIFO:
                     return list.Pop();
-                case Rule.MINQ:
+                case RuleD.MINQ:
                     return list.GetWithMinQ();
                 default:
                     return list.Dequeue();
             }
         }
-        public static (double FunctionMinimum, int counter) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, Rule rule)
+        public static (double FunctionMinimum, int counter) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleD rule)
         {
             double lipConst = lipzits(epsilon);
             LinkedList<DihtomiaRectangle> rectangles = new LinkedList<DihtomiaRectangle>();
@@ -83,20 +83,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
 
     public static class LinkedListExtension
     {
-        public static T Dequeue<T>(this LinkedList<T> list)
-        {
-            if (list.First == null) return default;
-            T first = list.First.Value;
-            list.RemoveFirst();
-            return first;
-        }
-        public  static T Pop<T>(this LinkedList<T> list)
-        {
-            if (list.Last == null) return default;
-            T last = list.Last.Value;
-            list.RemoveLast();
-            return last;
-        }
+        
         internal static DihtomiaRectangle GetWithMinQ(this LinkedList<DihtomiaRectangle> list)
         {
             var minQ = list.OrderByDescending(item => item.Q).Last();
