@@ -20,7 +20,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
             center = new List<double>(leftCorner.Count);
             for (int i = 0; i < leftCorner.Count; i++)
             {
-                center[i] = (leftCorner[i] + rightCorner[i]) / 2;
+                center.Insert(i, (leftCorner[i] + rightCorner[i]) / 2);
             }
         }
         public (double max, int dimension) GetMaxSide()
