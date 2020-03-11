@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static MultiDimensionOptimization.MDO;
 
 namespace MultiDimensionOptimization.MNPModificated
 {
@@ -8,10 +9,11 @@ namespace MultiDimensionOptimization.MNPModificated
     {
         List<double> lowerCorner;
         List<double> upperCorner;
-        public ModRectangle(List<double> lowerCorner, List<double> upperCorner)
+        public ModRectangle(List<double> lowerCorner, List<double> upperCorner,GraphicSettings settings = null)
         {
             this.lowerCorner = lowerCorner;
             this.upperCorner = upperCorner;
+            settings?.Handle(lowerCorner, upperCorner);
         }
 
         public List<double> GetIterationPoint (double h)
@@ -23,7 +25,7 @@ namespace MultiDimensionOptimization.MNPModificated
             }
             return point;
         }
-        public LinkedList<ModRectangle> Split(double h, RuleM rule)
+        public LinkedList<ModRectangle> Split(double h, RuleM rule, GraphicSettings settings = null)
         {
             LinkedList<ModRectangle> rect = new LinkedList<ModRectangle>();
             for(int i=0; i <lowerCorner.Count; i++)
@@ -39,11 +41,11 @@ namespace MultiDimensionOptimization.MNPModificated
                     }
                     if(rule == RuleM.FIFO)
                     {
-                        rect.AddFirst(new ModRectangle(newLow, newUp));
+                        rect.AddFirst(new ModRectangle(newLow, newUp,settings));
                     }
                     else
                     {
-                        rect.AddLast(new ModRectangle(newLow, newUp));
+                        rect.AddLast(new ModRectangle(newLow, newUp,settings));
                     }
                 }
             }

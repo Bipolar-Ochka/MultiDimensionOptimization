@@ -12,11 +12,11 @@ namespace MultiDimensionOptimization.MNPModificated
     }
     public static class MNPANK
     {        
-        public static (double FunctionMinimum, int counter, int optimal) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleM ruleSubList, RuleM ruleMainList)
+        public static (double FunctionMinimum, int counter, int optimal) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleM ruleSubList, RuleM ruleMainList, GraphicSettings settings=null)
         {
             double lipVal = lipzits(epsilon);
             LinkedList<ModRectangle> rectangles = new LinkedList<ModRectangle>();
-            ModRectangle first = new ModRectangle(lowerBound, upperBound);
+            ModRectangle first = new ModRectangle(lowerBound, upperBound,settings);
             rectangles.AddFirst(first);
             int counter = 1;
             int optimal = counter;
@@ -36,7 +36,7 @@ namespace MultiDimensionOptimization.MNPModificated
                 {
                     h += (functionValue - currentMin) / lipVal;
                 }
-                var splitted = currentRect.Split(h,ruleSubList);
+                var splitted = currentRect.Split(h,ruleSubList,settings);
                 rectangles.ConcatList(splitted, ruleMainList);
                 counter++;
             }

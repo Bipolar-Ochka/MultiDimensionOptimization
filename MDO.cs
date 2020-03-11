@@ -7,6 +7,25 @@ namespace MultiDimensionOptimization
     {
         public delegate double OptimizingFunction(List<double> list);
         public delegate double LipzitsFunction(double epsilon);
+        public delegate void RectangleHandler(double xPosition, double yPosition, double width, double height);
+        public class GraphicSettings
+        {
+            int firstDimension;
+            int secondDimension;
+            RectangleHandler handler;
+            public GraphicSettings(RectangleHandler handler, int firstDimension, int secondDimension)
+            {
+                this.handler = handler;
+                this.firstDimension = firstDimension;
+                this.secondDimension = secondDimension;
+            }
+            internal void Handle(List<double>lower, List<double> upper)
+            {
+                double width = Math.Abs(upper[firstDimension] - lower[firstDimension]);
+                double height = Math.Abs(upper[secondDimension] - lower[secondDimension]);
+                handler?.Invoke(lower[this.firstDimension], upper[this.secondDimension],width,height);
+            }
+        }
         public static T Dequeue<T>(this LinkedList<T> list)
         {
             if (list.First == null) return default;

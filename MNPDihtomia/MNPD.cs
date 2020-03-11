@@ -29,11 +29,11 @@ namespace MultiDimensionOptimization.MNPDihtomia
                     return list.Dequeue();
             }
         }
-        public static (double FunctionMinimum, int counter, int optimal) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleD rule)
+        public static (double FunctionMinimum, int counter, int optimal) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleD rule,GraphicSettings settings =null)
         {
             double lipConst = lipzits(epsilon);
             LinkedList<DihtomiaRectangle> rectangles = new LinkedList<DihtomiaRectangle>();
-            DihtomiaRectangle first = new DihtomiaRectangle(lowerBound, upperBound);
+            DihtomiaRectangle first = new DihtomiaRectangle(lowerBound, upperBound,settings);
             first.EvalQ(function, lipConst);
             rectangles.AddFirst(first);
             int counter = 1;
@@ -46,7 +46,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
             while(rectangles.Count != 0)
             {
                 var current = GetRectangle(rectangles, rule);
-                var newRects = current.SplitByMaxSide();
+                var newRects = current.SplitByMaxSide(settings);
                 newRects.first.EvalQ(function, lipConst);
                 newRects.second.EvalQ(function, lipConst);
                 double funcInFirst = function(newRects.first.center);
