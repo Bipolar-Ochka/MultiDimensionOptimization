@@ -53,18 +53,18 @@ namespace MultiDimensionOptimization.MNPDihtomia
                 double funcInSecond = function(newRects.second.center);
                 if(currentMin < Math.Min(funcInFirst,funcInSecond))
                 {
-                    if(newRects.first.Q < (currentMin - epsilon) && newRects.first.GetMaxSide().max >= precision)
+                    if(newRects.first.Q <= (currentMin - epsilon) && newRects.first.GetMaxSide().max >= precision)
                     {
                         rectangles.AddFirst(newRects.first);
                     }
-                    if (newRects.second.Q < (currentMin - epsilon) && newRects.second.GetMaxSide().max >= precision)
+                    if (newRects.second.Q <= (currentMin - epsilon) && newRects.second.GetMaxSide().max >= precision)
                     {
                         rectangles.AddFirst(newRects.second);
                     }
                 }
                 else
                 {
-                    if(funcInFirst < funcInSecond)
+                    if(funcInFirst <= funcInSecond)
                     {
                         currentMin = funcInFirst;
                         rectangles.AddFirst(newRects.first);
