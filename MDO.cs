@@ -23,7 +23,7 @@ namespace MultiDimensionOptimization
             {
                 double width = Math.Abs(upper[firstDimension] - lower[firstDimension]);
                 double height = Math.Abs(upper[secondDimension] - lower[secondDimension]);
-                handler?.Invoke(lower[this.firstDimension], upper[this.secondDimension],width,height);
+                this.handler?.Invoke(lower[this.firstDimension], upper[this.secondDimension],width,height);
             }
         }
         public static T Dequeue<T>(this LinkedList<T> list)

@@ -21,25 +21,28 @@ namespace MultiDimensionOptimization.MNPModificated
             int counter = 1;
             int optimal = counter;
             double currentMin = function(lowerBound);
-            double h = 2 * (precision - epsilon) / lipVal;
+            double h_base = 2d * (precision / lipVal - epsilon / lipVal);
+            double h = h_base;
             while (rectangles.Count != 0)
             {
                 var currentRect = rectangles.Dequeue();
                 var iterPoint = currentRect.GetIterationPoint(h);
                 var functionValue = function(iterPoint);
-                if(functionValue < currentMin)
+                if(functionValue > currentMin)
                 {
-                    currentMin = functionValue;
-                    optimal = counter;
+                    h = h_base + (functionValue - currentMin) / lipVal;
                 }
                 else
                 {
-                    h += (functionValue - currentMin) / lipVal;
+                    h = h_base;
+                    currentMin = functionValue;
+                    optimal = counter;
                 }
                 var splitted = currentRect.Split(h,ruleSubList,settings);
                 rectangles.ConcatList(splitted, ruleMainList);
                 counter++;
             }
+            GC.Collect();
             return (currentMin, counter,optimal);
         }
     }

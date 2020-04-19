@@ -20,7 +20,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
             center = new List<double>(leftCorner.Count);
             for (int i = 0; i < leftCorner.Count; i++)
             {
-                center.Insert(i, (leftCorner[i] + rightCorner[i]) / 2);
+                center.Insert(i, (leftCorner[i] / 2 + rightCorner[i] / 2));
             }
             settings?.Handle(lowerCorner, upperCorner);
         }
@@ -42,18 +42,18 @@ namespace MultiDimensionOptimization.MNPDihtomia
         
         public void EvalQ(OptimizingFunction func, double lipzitsConst)
         {
-            Q = func(center) - lipzitsConst * GetMaxSide().max / 2;
+            Q = func(center) - lipzitsConst / 2 * GetMaxSide().max;
         }
         public (DihtomiaRectangle first, DihtomiaRectangle second) SplitByMaxSide(GraphicSettings settings =null)
         {
             int splitDimension = GetMaxSide().dimension;
 
             List<double> firstUp = new List<double>(upperCorner);
-            firstUp[splitDimension] = (lowerCorner[splitDimension] + upperCorner[splitDimension]) / 2;
+            firstUp[splitDimension] = (lowerCorner[splitDimension] / 2 + upperCorner[splitDimension] / 2);
             DihtomiaRectangle first = new DihtomiaRectangle(new List<double>(lowerCorner), firstUp,settings);
 
             List<double> secondLow = new List<double>(lowerCorner);
-            secondLow[splitDimension] = (lowerCorner[splitDimension] + upperCorner[splitDimension]) / 2;
+            secondLow[splitDimension] = (lowerCorner[splitDimension] / 2 + upperCorner[splitDimension] / 2);
             DihtomiaRectangle second = new DihtomiaRectangle(secondLow,new List<double>(upperCorner),settings);
 
             return (first, second);

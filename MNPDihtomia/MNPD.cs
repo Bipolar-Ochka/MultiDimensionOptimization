@@ -79,6 +79,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
                 }
                 counter++;
             }
+            GC.Collect();
             return (currentMin, counter,optimal);
         }
     }

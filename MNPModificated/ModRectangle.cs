@@ -21,7 +21,7 @@ namespace MultiDimensionOptimization.MNPModificated
             List<double> point = new List<double>(lowerCorner.Count);
             for(int i =0; i < lowerCorner.Count; i++)
             {
-                point.Insert(i, Math.Min(lowerCorner[i] + h/2d, upperCorner[i]));
+                point.Insert(i, Math.Min(lowerCorner[i] + h/2.0d, upperCorner[i]));
             }
             return point;
         }
@@ -30,7 +30,7 @@ namespace MultiDimensionOptimization.MNPModificated
             LinkedList<ModRectangle> rect = new LinkedList<ModRectangle>();
             for(int i=0; i <lowerCorner.Count; i++)
             {
-                if(Math.Abs(upperCorner[i]-lowerCorner[i])>h)
+                if(upperCorner[i]-lowerCorner[i]>h)
                 {
                     List<double> newLow = new List<double>(lowerCorner);
                     newLow[i] += h;
