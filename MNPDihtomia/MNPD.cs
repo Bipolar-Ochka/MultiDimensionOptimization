@@ -29,7 +29,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
                     return list.Dequeue();
             }
         }
-        public static (double FunctionMinimum, int counter, int optimal) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleD rule,GraphicSettings settings =null)
+        public static (double FunctionMinimum, int counter, int optimal, List<double> optimalPoint) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleD rule,GraphicSettings settings =null)
         {
             double lipConst = lipzits(epsilon);
             LinkedList<DihtomiaRectangle> rectangles = new LinkedList<DihtomiaRectangle>();
@@ -38,10 +38,19 @@ namespace MultiDimensionOptimization.MNPDihtomia
             rectangles.AddFirst(first);
             int counter = 1;
             int optimal = counter;
+            List<double> optimalPoint;
             double currentMin = Math.Min(function(lowerBound),function(first.center));
+            if(function(lowerBound) < function(first.center))
+            {
+                optimalPoint =new List<double>(lowerBound);
+            }
+            else
+            {
+                optimalPoint = new List<double>(first.center);
+            }
             if(first.Q >= currentMin - epsilon)
             {
-                return (currentMin, counter, optimal);
+                return (currentMin, counter, optimal, optimalPoint);
             }
             while(rectangles.Count != 0)
             {
@@ -68,11 +77,13 @@ namespace MultiDimensionOptimization.MNPDihtomia
                     {
                         currentMin = funcInFirst;
                         rectangles.AddFirst(newRects.first);
+                        optimalPoint = new List<double>(newRects.first.center);
                     }
                     else
                     {
                         currentMin = funcInSecond;
                         rectangles.AddFirst(newRects.second);
+                        optimalPoint = new List<double>(newRects.second.center);
                     }
                     rectangles.RemoveWorse(currentMin,epsilon);
                     optimal = counter;
@@ -80,7 +91,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
                 counter++;
             }
             GC.Collect();
-            return (currentMin, counter,optimal);
+            return (currentMin, counter,optimal,optimalPoint);
         }
     }
 

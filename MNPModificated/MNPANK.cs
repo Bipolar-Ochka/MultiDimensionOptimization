@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using static MultiDimensionOptimization.MDO;
 
 namespace MultiDimensionOptimization.MNPModificated
@@ -12,7 +13,7 @@ namespace MultiDimensionOptimization.MNPModificated
     }
     public static class MNPANK
     {        
-        public static (double FunctionMinimum, int counter, int optimal) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleM ruleSubList, RuleM ruleMainList, GraphicSettings settings=null)
+        public static (double FunctionMinimum, int counter, int optimal, List<double> optimalPoint) Solve(OptimizingFunction function, LipzitsFunction lipzits, double precision, double epsilon, List<double> lowerBound, List<double> upperBound, RuleM ruleSubList, RuleM ruleMainList, GraphicSettings settings=null)
         {
             double lipVal = lipzits(epsilon);
             LinkedList<ModRectangle> rectangles = new LinkedList<ModRectangle>();
@@ -23,11 +24,13 @@ namespace MultiDimensionOptimization.MNPModificated
             double currentMin = function(lowerBound);
             double h_base = 2d * (precision / lipVal - epsilon / lipVal);
             double h = h_base;
+            List<double> optimalPoint = new List<double>(lowerBound);
             while (rectangles.Count != 0)
             {
                 var currentRect = rectangles.Dequeue();
                 var iterPoint = currentRect.GetIterationPoint(h);
                 var functionValue = function(iterPoint);
+                
                 if(functionValue > currentMin)
                 {
                     h = h_base + (functionValue - currentMin) / lipVal;
@@ -36,6 +39,7 @@ namespace MultiDimensionOptimization.MNPModificated
                 {
                     h = h_base;
                     currentMin = functionValue;
+                    optimalPoint = new List<double>(iterPoint);
                     optimal = counter;
                 }
                 var splitted = currentRect.Split(h,ruleSubList,settings);
@@ -43,7 +47,7 @@ namespace MultiDimensionOptimization.MNPModificated
                 counter++;
             }
             GC.Collect();
-            return (currentMin, counter,optimal);
+            return (currentMin, counter,optimal,optimalPoint);
         }
     }
     public static class LinkedListExtension
