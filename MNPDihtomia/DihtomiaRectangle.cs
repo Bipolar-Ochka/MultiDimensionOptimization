@@ -42,7 +42,7 @@ namespace MultiDimensionOptimization.MNPDihtomia
         
         public void EvalQ(OptimizingFunction func, double lipzitsConst)
         {
-            Q = func(center) - lipzitsConst / 2 * GetMaxSide().max;
+            Q = func(center) - lipzitsConst * (GetMaxSide().max/2d);
         }
         public (DihtomiaRectangle first, DihtomiaRectangle second) SplitByMaxSide(GraphicSettings settings =null)
         {
